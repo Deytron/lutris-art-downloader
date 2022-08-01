@@ -92,7 +92,7 @@ def DBConnect():
 # Search for a game by name via Lutris database, then get the grid data
 def SearchGame(game):
     res = requests.get('https://www.steamgriddb.com/api/v2/search/autocomplete/' + game, headers=auth).json()
-    if len(res) == 0:
+    if len(res["data"]) == 0:
         print("Could not find a cover for game " + game)
     else:
         print("Found game " + game.replace('-', ' ').title())
