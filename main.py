@@ -13,7 +13,7 @@ def main():
     global user, dbpath, dim, auth
     print("Welcome " + user + " to Lutris Cover Art Downloader!\n")
     user = GetUser()
-    dbpath = '/home/' + user + '/.local/share/lutris/pga.db'
+    dbpath = '/home/' + user + '/.var/app/net.lutris.Lutris/data/lutris/pga.db'
     dim = GetCoverType()
     auth = GetAPIKey()
     print("Getting API Key...\n")
@@ -44,10 +44,10 @@ def GetCoverType():
     ans = inquirer.prompt(questions)["type"]
     print('Cover type set to ' + ans + '\n')
     if ans == 'Banner (460x215)':
-        covpath = '/home/' + user + '/.cache/lutris/banners/'
+        covpath = '/home/' + user + '/.var/app/net.lutris.Lutris/cache/lutris/banners/'
         dim = '460x215'
     else:
-        covpath = '/home/' + user + '/.cache/lutris/coverart/'
+        covpath = '/home/' + user + '/.var/app/net.lutris.Lutris/cache/lutris/coverart/'
         dim = '600x900'
     return dim
 
