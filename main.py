@@ -21,7 +21,7 @@ def main():
         SetAPIKey()
     co = DBConnect()
     GetGamesList(co)
-
+    CleanNotInstalledGames(co)
 
 ####### FUNCTIONS
 
