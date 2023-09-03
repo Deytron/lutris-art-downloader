@@ -13,7 +13,7 @@ def main():
     global user, dbpath, dim, auth
     print("Welcome " + user + " to Lutris Cover Art Downloader!\n")
     user = GetUser()
-    dbpath = '/home/' + user + '/.var/app/net.lutris.Lutris/data/lutris/pga.db'
+    dbpath = '/home/' + user + '/.local/share/lutris/pga.db'
     dim = GetCoverType()
     auth = GetAPIKey()
     print("Getting API Key...\n")
@@ -24,6 +24,26 @@ def main():
 
 
 ####### FUNCTIONS
+
+#Get list of installed games
+def CleanNotInstalledGames(co):
+    c = co.execute('SELECT slug FROM games WHERE installed = "1"')
+    games = c.fetchall()
+    listgames = []
+    for entry in games:
+        title = entry[0] + '.jpg'
+        listgames.append(title.lower())
+    DeleteImages(listgames)
+
+#Delete covers/banners for not installed games
+def DeleteImages(listgames):
+    bannpath = '/home/' + user + '/.cache/lutris/coverart/'
+    covpath = '/home/' + user + '/.cache/lutris/banners/'
+    for path in [bannpath, covpath]:
+        for filename in os.listdir(path):
+            if filename.lower() not in listgames and os.path.isfile(os.path.join(path, filename)):
+                if filename.lower().endswith('.jpg'):
+                    os.remove(os.path.join(path, filename))
 
 
 def GetUser():
@@ -44,10 +64,10 @@ def GetCoverType():
     ans = inquirer.prompt(questions)["type"]
     print('Cover type set to ' + ans + '\n')
     if ans == 'Banner (460x215)':
-        covpath = '/home/' + user + '/.var/app/net.lutris.Lutris/cache/lutris/banners/'
+        covpath = '/home/' + user + '/.cache/lutris/banners/'
         dim = '460x215'
     else:
-        covpath = '/home/' + user + '/.var/app/net.lutris.Lutris/cache/lutris/coverart/'
+        covpath = '/home/' + user + '/.cache/lutris/coverart/'
         dim = '600x900'
     return dim
 
@@ -115,7 +135,7 @@ def DownloadCover(name):
 
 # Get all games and for each game, check if it already has a cover
 def GetGamesList(co):
-    c = co.execute('SELECT slug FROM games')
+    c = co.execute('SELECT slug FROM games WHERE installed = "1"')
     games = c.fetchall()
     for entry in games:
         title = entry[0]
