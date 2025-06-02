@@ -155,9 +155,12 @@ def download_cover(name, cov_path, dim):
     except Exception:
         print(f"Could not find a cover for game {name}")
         return
-
+    
+    # Create the directory if it doesn't exist
+    os.makedirs(cov_path, exist_ok=True)
+    
     r = requests.get(image_url)
-
+    
     with open(f'{cov_path}{name}.jpg', 'wb') as f:
         f.write(r.content)
 
