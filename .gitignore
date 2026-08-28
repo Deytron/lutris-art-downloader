@@ -1,1 +1,4 @@
 apikey.txt
+__pycache__/
+*.pyc
+.venv/
